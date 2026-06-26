@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="es-MX">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Feliz cumpleaños, Camila 🤍</title>
+<meta name="description" content="Te llegó algo… una sorpresa de cumpleaños para Camila. 🤍">
+<meta name="theme-color" content="#211233">
+<meta name="color-scheme" content="dark">
+<link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
+
+<!-- Open Graph / vista previa al compartir el link (WhatsApp, iMessage, etc.) -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Feliz cumpleaños, Camila">
+<meta property="og:title" content="Feliz cumpleaños, Camila 🤍">
+<meta property="og:description" content="Te llegó algo… ábrelo. 🤍">
+<meta property="og:image" content="__BASE__assets/og.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Un arco de foquitos encendidos en la noche">
+<meta property="og:url" content="__BASE__">
+<meta property="og:locale" content="es_MX">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Feliz cumpleaños, Camila 🤍">
+<meta name="twitter:description" content="Te llegó algo… ábrelo. 🤍">
+<meta name="twitter:image" content="__BASE__assets/og.jpg">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=DM+Sans:opsz,wght@9..40,400;9..40,500&family=Caveat:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    /* paleta sacada de SUS fotos: noche del arco morado, puerta de talavera, buganvilias, foquitos */
+    --noche:#211233;
+    --noche-2:#160b24;
+    --cobalto:#3E63B6;
+    --buganvilia:#E0457B;
+    --rosa:#F6A8C4;
+    --oro:#FFD98A;
+    --crema:#F2E7CB;
+    --tinta:#F4ECDC;
+    --tinta-50:rgba(244,236,220,.62);
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{
+    font-family:"DM Sans",system-ui,sans-serif;
+    background:radial-gradient(120% 90% at 50% 0%, #2e1a47 0%, var(--noche) 42%, var(--noche-2) 100%);
+    color:var(--tinta);
+    -webkit-font-smoothing:antialiased;
+    overflow:hidden;
+    position:fixed;inset:0;
+  }
+  .wrap{height:100%;width:100%;position:relative}
+
+  /* pétalos de buganvilia, ambientales */
+  .petals{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:2}
+  .petal{position:absolute;top:-6vh;width:14px;height:14px;background:var(--buganvilia);
+    border-radius:60% 0 60% 0;opacity:0;filter:drop-shadow(0 2px 3px rgba(0,0,0,.25));
+    animation:fall linear infinite}
+  @keyframes fall{
+    0%{transform:translateY(-10vh) rotate(0deg);opacity:0}
+    8%{opacity:.62}
+    92%{opacity:.5}
+    100%{transform:translateY(112vh) rotate(420deg);opacity:0}
+  }
+
+  /* escenarios — el padding inferior deja libre la barra de "sonando" y los puntos */
+  .stage{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;
+    justify-content:center;text-align:center;padding:32px 26px calc(96px + env(safe-area-inset-bottom));
+    opacity:0;transform:translateY(14px) scale(.99);pointer-events:none;
+    transition:opacity .7s ease, transform .7s ease;z-index:3}
+  .stage.active{opacity:1;transform:none;pointer-events:auto}
+  .stage > *{max-width:520px;width:100%}
+
+  .eyebrow{font-size:.74rem;letter-spacing:.34em;text-transform:uppercase;color:var(--rosa);
+    margin-bottom:18px;opacity:.92}
+  h1{font-family:"Fraunces",Georgia,serif;font-weight:500;line-height:1.02;
+    font-size:clamp(2.9rem,13vw,4.6rem);letter-spacing:-.01em}
+  h2{font-family:"Fraunces",Georgia,serif;font-weight:500;line-height:1.05;
+    font-size:clamp(2rem,8.5vw,3rem);letter-spacing:-.01em}
+  .sub{margin-top:16px;font-size:1.04rem;color:var(--tinta-50);line-height:1.5}
+  .lead{margin-top:14px;font-size:1.12rem;line-height:1.55;color:var(--tinta)}
+  .hand{font-family:"Caveat",cursive;color:var(--oro);font-size:1.7rem;line-height:1.2}
+
+  /* botón */
+  .btn{appearance:none;border:0;cursor:pointer;margin-top:30px;
+    font-family:"DM Sans",sans-serif;font-weight:500;font-size:1rem;letter-spacing:.01em;
+    color:var(--noche-2);background:linear-gradient(180deg,#ffe6ad,var(--oro));
+    padding:15px 34px;border-radius:999px;
+    box-shadow:0 10px 30px -10px rgba(255,217,138,.7), inset 0 1px 0 rgba(255,255,255,.6);
+    transition:transform .18s ease, box-shadow .25s ease}
+  .btn:hover{transform:translateY(-2px);box-shadow:0 16px 40px -12px rgba(255,217,138,.85)}
+  .btn:active{transform:translateY(0)}
+  .btn:focus-visible{outline:3px solid var(--rosa);outline-offset:3px}
+  .btn.ghost{background:transparent;color:var(--tinta);box-shadow:inset 0 0 0 1.5px rgba(244,236,220,.4)}
+
+  /* fade-in de las fotos (para que no aparezcan de golpe) */
+  img.ph{opacity:0;transition:opacity .8s ease}
+  img.ph.ready{opacity:1}
+
+  /* arco de foquitos (firma) — recreado de su foto */
+  .arch{display:block;margin:0 auto 6px;width:min(300px,82%);height:auto;overflow:visible}
+  .arch .wire{fill:none;stroke:rgba(255,217,138,.22);stroke-width:1.4}
+  .bulb{fill:var(--oro);filter:drop-shadow(0 0 5px rgba(255,217,138,.9));
+    animation:tw 3.6s ease-in-out infinite}
+  @keyframes tw{0%,100%{opacity:.55}50%{opacity:1}}
+
+  /* sobres */
+  .sobres{display:flex;gap:14px;justify-content:center;margin-top:30px;flex-wrap:wrap}
+  .sobre{position:relative;width:92px;height:68px;cursor:pointer;border:0;background:none;padding:0;
+    perspective:600px;transition:transform .2s ease}
+  .sobre:hover{transform:translateY(-3px)}
+  .sobre:focus-visible{outline:3px solid var(--rosa);outline-offset:4px;border-radius:6px}
+  .body-e{position:absolute;inset:0;border-radius:7px;
+    background:linear-gradient(160deg,#f6ead0,#e7d3aa);
+    box-shadow:0 10px 24px -12px rgba(0,0,0,.6)}
+  .flap{position:absolute;left:0;top:0;width:100%;height:50%;transform-origin:top;
+    background:linear-gradient(160deg,#efe0c1,#d8c39a);
+    clip-path:polygon(0 0,100% 0,50% 100%);border-radius:7px 7px 0 0;
+    transition:transform .55s ease;z-index:3;backface-visibility:hidden}
+  .seal{position:absolute;left:50%;top:46%;transform:translate(-50%,-50%);z-index:4;
+    width:22px;height:22px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#ff6fa0,var(--buganvilia));
+    box-shadow:0 2px 6px rgba(0,0,0,.4);transition:opacity .3s ease;font-size:11px;
+    display:flex;align-items:center;justify-content:center;color:#fff}
+  .tag{position:absolute;left:0;right:0;bottom:-22px;font-size:.72rem;color:var(--tinta-50);
+    letter-spacing:.05em}
+  .sobre.open .flap{transform:rotateX(178deg)}
+  .sobre.open .seal{opacity:0}
+  .sobre.done .body-e{background:linear-gradient(160deg,#cdbd9a,#bda985)}
+
+  /* tarjeta revelada del sobre */
+  .reveal{position:fixed;inset:0;z-index:30;display:none;align-items:center;justify-content:center;
+    padding:26px;background:rgba(12,6,20,.74);backdrop-filter:blur(6px)}
+  .reveal.show{display:flex}
+  .card{max-width:360px;width:100%;background:var(--crema);color:#3a2b1c;border-radius:18px;
+    overflow:hidden;box-shadow:0 30px 70px -20px rgba(0,0,0,.7);
+    transform:translateY(18px) scale(.96);opacity:0;transition:transform .5s ease,opacity .5s ease}
+  .reveal.show .card{transform:none;opacity:1}
+  .card img{width:100%;height:300px;object-fit:cover;display:block;background:#e7d8b8}
+  .card .msg{padding:22px 22px 8px;font-family:"Fraunces",serif;font-size:1.2rem;line-height:1.4}
+  .card .close{display:block;width:100%;text-align:center;padding:16px;cursor:pointer;border:0;
+    background:none;color:var(--buganvilia);font-family:"DM Sans",sans-serif;font-weight:500;
+    font-size:.95rem;letter-spacing:.02em}
+  .card .close:focus-visible{outline:3px solid var(--buganvilia);outline-offset:-4px}
+
+  /* rasca y revela — el ancho se limita por alto en pantallas chicas para que quepa con la barra */
+  .scratch-wrap{position:relative;
+    width:min(320px,86%,calc((100vh - 340px) * 0.75));
+    width:min(320px,86%,calc((100dvh - 340px) * 0.75));
+    aspect-ratio:3/4;margin:22px auto 0;
+    border-radius:18px;overflow:hidden;box-shadow:0 24px 60px -22px rgba(0,0,0,.7)}
+  .scratch-prize{position:absolute;inset:0}
+  .scratch-prize img{width:100%;height:100%;object-fit:cover;display:block}
+  .scratch-prize .prize-txt{position:absolute;left:0;right:0;bottom:0;padding:40px 18px 18px;
+    font-family:"Fraunces",serif;font-size:1.15rem;color:#fff;text-align:center;
+    background:linear-gradient(transparent,rgba(20,10,30,.85))}
+  #scratch{position:absolute;inset:0;width:100%;height:100%;touch-action:none;cursor:grab}
+  .scratch-hint{position:absolute;left:0;right:0;top:46%;text-align:center;color:#5b4a36;
+    font-weight:500;letter-spacing:.06em;pointer-events:none;font-size:.95rem}
+
+  /* foto "nosotros" */
+  .us-photo{margin:8px auto 6px;width:min(290px,78%);border-radius:16px;overflow:hidden;
+    box-shadow:0 26px 64px -22px rgba(0,0,0,.78);border:1px solid rgba(255,217,138,.2)}
+  .us-photo img{display:block;width:100%;height:auto}
+
+  /* cierre con foto del arco */
+  .finale{position:absolute;inset:0;z-index:3;display:flex;flex-direction:column;
+    align-items:center;justify-content:flex-end;text-align:center;
+    padding:0 26px calc(104px + env(safe-area-inset-bottom));
+    opacity:0;transform:scale(1.04);pointer-events:none;transition:opacity 1.1s ease, transform 6s ease}
+  .finale.active{opacity:1;transform:scale(1);pointer-events:auto}
+  .finale::before{content:"";position:absolute;inset:0;z-index:-1;background:var(--bgimg);
+    background-size:cover;background-position:center}
+  .finale::after{content:"";position:absolute;inset:0;z-index:-1;
+    background:linear-gradient(transparent 30%, rgba(20,10,30,.55) 62%, rgba(15,8,22,.92))}
+  .finale h2{text-shadow:0 2px 18px rgba(0,0,0,.5)}
+  .finale .lead{color:rgba(244,236,220,.92);text-shadow:0 1px 10px rgba(0,0,0,.6);max-width:440px}
+
+  /* volver a empezar (discreto, sólo en el cierre) */
+  .restart{margin-top:24px;appearance:none;border:0;cursor:pointer;background:none;
+    color:rgba(244,236,220,.72);font-family:"DM Sans",sans-serif;font-size:.78rem;
+    letter-spacing:.18em;text-transform:uppercase;padding:10px 16px;
+    transition:color .2s ease}
+  .restart:hover{color:var(--oro)}
+  .restart:focus-visible{outline:3px solid var(--rosa);outline-offset:3px;border-radius:999px}
+
+  /* equalizer (barra de sonando) */
+  .eq{display:flex;gap:3px;align-items:flex-end;height:18px;margin-left:auto}
+  .eq i{width:3px;height:6px;background:var(--rosa);border-radius:2px;animation:eq 1s ease-in-out infinite}
+  .eq i:nth-child(2){animation-delay:.2s}.eq i:nth-child(3){animation-delay:.4s}.eq i:nth-child(4){animation-delay:.6s}
+  .eq i{animation-play-state:paused}
+  body.music-on .eq i{animation-play-state:running}
+  @keyframes eq{0%,100%{height:5px}50%{height:17px}}
+  /* barra "sonando" fija abajo, presente desde el inicio.
+     el iframe va detras y cubierto, asi el navegador (incl. iPhone) si deja sonar el audio */
+  .np-frame{position:fixed;left:50%;transform:translateX(-50%);
+    bottom:calc(14px + env(safe-area-inset-bottom));width:min(440px,90vw);height:64px;
+    z-index:23;border-radius:16px;overflow:hidden;pointer-events:none}
+  .np-frame iframe{width:100%;height:100%;border:0;display:block}
+  .nowplaying{position:fixed;left:50%;transform:translateX(-50%);
+    bottom:calc(14px + env(safe-area-inset-bottom));width:min(440px,90vw);height:64px;
+    z-index:24;display:flex;align-items:center;gap:12px;padding:0 16px;
+    background:rgba(22,12,33,.9);border:1px solid rgba(255,217,138,.28);
+    border-radius:16px;backdrop-filter:blur(10px);box-shadow:0 14px 36px -16px rgba(0,0,0,.7)}
+  .np-btn{flex:0 0 auto;width:42px;height:42px;border-radius:50%;border:0;cursor:pointer;
+    background:linear-gradient(180deg,#ffe6ad,var(--oro));color:var(--noche-2);font-size:1rem;
+    display:flex;align-items:center;justify-content:center;box-shadow:0 8px 20px -8px rgba(255,217,138,.8)}
+  .np-btn:focus-visible{outline:3px solid var(--rosa);outline-offset:3px}
+  .np-track{min-width:0;flex:1;text-align:left}
+  .np-t1{font-family:"Fraunces",serif;font-size:1rem;line-height:1.1;
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .np-t2{font-size:.76rem;color:var(--tinta-50);margin-top:2px;
+    white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .foot{margin-top:18px;font-size:.74rem;letter-spacing:.18em;text-transform:uppercase;color:rgba(244,236,220,.45)}
+
+  /* confeti */
+  #confetti{position:absolute;inset:0;z-index:6;pointer-events:none}
+
+  /* progreso */
+  .dots{position:absolute;left:0;right:0;bottom:calc(92px + env(safe-area-inset-bottom));
+    display:flex;gap:8px;justify-content:center;z-index:5}
+  .dots b{width:7px;height:7px;border-radius:50%;background:rgba(244,236,220,.25);transition:.4s}
+  .dots b.on{background:var(--oro);transform:scale(1.25)}
+
+  @media (prefers-reduced-motion: reduce){
+    .petal{display:none}
+    .stage,.finale,.card,.bulb,.eq i{transition:none;animation:none}
+    img.ph{opacity:1;transition:none}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="petals" id="petals" aria-hidden="true"></div>
+
+  <!-- 0 · LANDING -->
+  <section class="stage active" data-stage="0">
+    <svg class="arch" viewBox="0 0 300 170" aria-hidden="true"><path class="wire" id="archpath" d="M14,168 C20,60 110,18 150,18 C190,18 280,60 286,168"/></svg>
+    <p class="eyebrow">feliz cumpleaños ·</p>
+    <h1>Te llegó<br>algo</h1>
+    <p class="sub">sí, con un día de retraso 🙈</p>
+    <button class="btn" id="openBtn" data-go="1">Abrir</button>
+  </section>
+
+  <!-- 1 · CHISTE DE LLEGAR TARDE -->
+  <section class="stage" data-stage="1">
+    <p class="eyebrow" id="loadline">preparando todo…</p>
+    <h2 id="jokeline" style="opacity:0">detectado: 1 día tarde</h2>
+    <p class="lead" id="jokepunch" style="opacity:0">pero lo bonito no se vence por una fecha 😄</p>
+    <button class="btn" data-go="2" id="jokebtn" style="opacity:0;pointer-events:none">Va, sigue</button>
+  </section>
+
+  <!-- 2 · SOBRES -->
+  <section class="stage" data-stage="2">
+    <h2>Te dejé tres sobres</h2>
+    <p class="sub">ábrelos cuando quieras, a tu ritmo</p>
+    <div class="sobres" id="sobres">
+      <button class="sobre" data-msg="Feliz cumpleaños. Que la vida te trate tan bonito como tú tratas a todos." data-img="sobre1" data-alt="Camila junto a la fachada de Casa N°58, con buganvilias rosas en primer plano" aria-label="Abrir sobre uno">
+        <div class="body-e"></div><div class="flap"></div><div class="seal">♥</div><span class="tag">uno</span>
+      </button>
+      <button class="sobre" data-msg="Sigues pareciéndome de lo más bonito que conozco. Y no me cuesta decirlo." data-img="sobre2" data-alt="Camila sonriendo frente a la puerta azul de talavera de Casa N°58" aria-label="Abrir sobre dos">
+        <div class="body-e"></div><div class="flap"></div><div class="seal">♥</div><span class="tag">dos</span>
+      </button>
+      <button class="sobre" data-msg="Esto no es para pedirte nada. Es solo que, en tu día, me acordé de ti. Y ya." data-img="sobre3" data-alt="Camila sonriendo y saludando en un andador iluminado de morado" aria-label="Abrir sobre tres">
+        <div class="body-e"></div><div class="flap"></div><div class="seal">♥</div><span class="tag">tres</span>
+      </button>
+    </div>
+    <button class="btn" data-go="3" id="afterSobres" style="opacity:.0;pointer-events:none;margin-top:42px">Una cosa más</button>
+  </section>
+
+  <!-- 3 · RASCA Y REVELA -->
+  <section class="stage" data-stage="3">
+    <h2>Antes de irte…</h2>
+    <p class="sub">rasca aquí 👆</p>
+    <div class="scratch-wrap">
+      <div class="scratch-prize">
+        <img src="assets/scratch.jpg" class="ph" decoding="async" alt="Camila sonriendo frente a la puerta de talavera azul de Casa N°58, entre buganvilias rosas">
+        <div class="prize-txt">que esa sonrisa no te falte nunca 🤍</div>
+      </div>
+      <div class="scratch-hint">✦ rasca ✦</div>
+      <canvas id="scratch" role="img" aria-label="Área para rascar y revelar una foto sorpresa"></canvas>
+    </div>
+    <button class="btn" data-go="4" id="afterScratch" style="opacity:0;pointer-events:none">Sigue</button>
+  </section>
+
+  <!-- 4 · NOSOTROS (foto en la moto) -->
+  <section class="stage" data-stage="4">
+    <p class="eyebrow">p.d. ·</p>
+    <div class="us-photo"><img src="assets/us.jpg" class="ph" decoding="async" alt="Los dos abrazados con cascos de moto, de noche, junto a una motocicleta roja"></div>
+    <p class="lead" style="max-width:420px">Sigue siendo una de mis fotos favoritas.</p>
+    <button class="btn" data-go="5">Ya casi…</button>
+  </section>
+
+  <!-- 5 · CIERRE + CANCIÓN -->
+  <section class="finale" data-stage="5" style="--bgimg:url('assets/finale.jpg')">
+    <h2>Feliz vuelta al sol 🌎</h2>
+    <p class="lead">Que este año te pase de todo lo bueno. Te lo mereces, en serio.</p>
+    <p class="hand" style="margin-top:10px">— y que cumplas un montón más</p>
+    <p class="foot">hecho para ti</p>
+    <button class="restart" id="restartBtn" type="button">volver a empezar ↺</button>
+  </section>
+
+  <!-- reproductor real: visible pero cubierto por la barra, asi el audio si suena en movil -->
+  <div class="np-frame" aria-hidden="true"><div id="ytaudio"></div></div>
+  <div class="nowplaying" id="nowplaying">
+    <button class="np-btn" id="npBtn" type="button" aria-pressed="false" aria-label="Reproducir o pausar la canción">▶</button>
+    <div class="np-track">
+      <div class="np-t1">Always on My Mind</div>
+      <div class="np-t2" id="npState">Willie Nelson · toca para reproducir</div>
+    </div>
+    <span class="eq" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
+  </div>
+  <!-- CANCIÓN · ID de YouTube en SONG_ID. Willie Nelson audio: 9ULH8_CF0os · video: R7f189Z0v0Y · Elvis: su ID -->
+
+  <canvas id="confetti" aria-hidden="true"></canvas>
+  <div class="dots" id="dots" aria-hidden="true"></div>
+</div>
+
+<script>
+const IMG = {
+  sobre1:"assets/sobre1.jpg", sobre2:"assets/sobre2.jpg", sobre3:"assets/sobre3.jpg"
+};
+const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* helpers para mostrar/ocultar los botones que aparecen al avanzar */
+function revealBtn(id){const b=document.getElementById(id);if(!b)return;
+  b.style.transition='opacity .7s';b.style.opacity='1';b.style.pointerEvents='auto';}
+function hideBtn(id){const b=document.getElementById(id);if(!b)return;
+  b.style.transition='none';b.style.opacity='0';b.style.pointerEvents='none';}
+
+/* ---------- pétalos ---------- */
+(function(){
+  if(reduce) return;
+  const root=document.getElementById('petals');
+  const tones=['#E0457B','#F6A8C4','#ff6fa0','#d6336c'];
+  for(let i=0;i<14;i++){
+    const p=document.createElement('span');p.className='petal';
+    p.style.left=(Math.random()*100)+'%';
+    p.style.animationDuration=(7+Math.random()*7)+'s';
+    p.style.animationDelay=(-Math.random()*12)+'s';
+    const s=10+Math.random()*10;p.style.width=p.style.height=s+'px';
+    p.style.background=tones[i%tones.length];
+    p.style.opacity=.5;
+    root.appendChild(p);
+  }
+})();
+
+/* ---------- foquitos del arco ---------- */
+(function(){
+  const path=document.getElementById('archpath');
+  if(!path) return;
+  const svg=path.closest('svg');
+  const L=path.getTotalLength();
+  const n=30;
+  for(let i=0;i<=n;i++){
+    const pt=path.getPointAtLength(L*i/n);
+    const c=document.createElementNS('http://www.w3.org/2000/svg','circle');
+    c.setAttribute('cx',pt.x);c.setAttribute('cy',pt.y);c.setAttribute('r',2.1);
+    c.setAttribute('class','bulb');
+    c.style.animationDelay=(Math.random()*3.6)+'s';
+    svg.appendChild(c);
+  }
+})();
+
+/* ---------- navegación de escenarios ---------- */
+const stages=[...document.querySelectorAll('[data-stage]')];
+const dotsBox=document.getElementById('dots');
+stages.forEach((_,i)=>{const b=document.createElement('b');if(i===0)b.className='on';dotsBox.appendChild(b);});
+const dots=[...dotsBox.children];
+let current=0;
+function goTo(i){
+  if(i===current)return;
+  stages[current].classList.remove('active');
+  current=i;
+  stages[i].classList.add('active');
+  dots.forEach((d,k)=>d.classList.toggle('on',k===i));
+  if(i===1) runJoke();
+  if(i===3) setTimeout(()=>scratchMod.init(),60);
+}
+document.querySelectorAll('[data-go]').forEach(b=>{
+  b.addEventListener('click',()=>goTo(+b.dataset.go));
+});
+
+/* ---------- escena del chiste ---------- */
+let jokeDone=false;
+function runJoke(){
+  if(jokeDone)return;jokeDone=true;
+  const load=document.getElementById('loadline');
+  const line=document.getElementById('jokeline');
+  const punch=document.getElementById('jokepunch');
+  const steps=['preparando todo…','envolviendo el regalo…','revisando la fecha… 🤔'];
+  let s=0;
+  const t=setInterval(()=>{s++;if(s<steps.length){load.textContent=steps[s];}
+    else{clearInterval(t);load.style.opacity=0;
+      setTimeout(()=>{line.style.transition='opacity .5s';line.style.opacity=1;burst();
+        setTimeout(()=>{punch.style.transition='opacity .6s';punch.style.opacity=1;},700);
+        setTimeout(()=>{revealBtn('jokebtn');},1300);
+      },350);
+    }
+  },700);
+}
+function resetJoke(){
+  jokeDone=false;
+  const load=document.getElementById('loadline');
+  if(load){load.textContent='preparando todo…';load.style.transition='none';load.style.opacity='';}
+  ['jokeline','jokepunch'].forEach(id=>{const el=document.getElementById(id);
+    if(el){el.style.transition='none';el.style.opacity='0';}});
+  hideBtn('jokebtn');
+}
+
+/* ---------- confeti ---------- */
+const cc=document.getElementById('confetti');const cx=cc.getContext('2d');
+let parts=[],raf=null;
+function size(){cc.width=innerWidth;cc.height=innerHeight;}
+size();addEventListener('resize',size);
+function burst(){
+  if(reduce)return;
+  const cols=['#FFD98A','#E0457B','#F6A8C4','#3E63B6','#fff'];
+  for(let i=0;i<110;i++){
+    parts.push({x:innerWidth/2,y:innerHeight*0.4,
+      vx:(Math.random()-.5)*9,vy:Math.random()*-9-3,
+      g:.22+Math.random()*.1,s:5+Math.random()*6,
+      c:cols[i%cols.length],a:1,rot:Math.random()*6,vr:(Math.random()-.5)*.3});
+  }
+  if(!raf)tick();
+}
+function tick(){
+  cx.clearRect(0,0,cc.width,cc.height);
+  parts.forEach(p=>{p.vy+=p.g;p.x+=p.vx;p.y+=p.vy;p.rot+=p.vr;p.a-=.006;
+    cx.save();cx.translate(p.x,p.y);cx.rotate(p.rot);cx.globalAlpha=Math.max(0,p.a);
+    cx.fillStyle=p.c;cx.fillRect(-p.s/2,-p.s/2,p.s,p.s*1.4);cx.restore();});
+  parts=parts.filter(p=>p.a>0&&p.y<cc.height+40);
+  if(parts.length)raf=requestAnimationFrame(tick);else{raf=null;cx.clearRect(0,0,cc.width,cc.height);}
+}
+
+/* ---------- sobres ---------- */
+const opened=new Set();
+const reveal=document.createElement('div');
+reveal.className='reveal';
+reveal.setAttribute('role','dialog');
+reveal.setAttribute('aria-modal','true');
+reveal.setAttribute('aria-label','Mensaje del sobre');
+reveal.innerHTML='<div class="card"><img class="ph" alt=""><div class="msg"></div><button class="close" type="button">cerrar</button></div>';
+document.body.appendChild(reveal);
+const rImg=reveal.querySelector('img'),rMsg=reveal.querySelector('.msg'),closeBtn=reveal.querySelector('.close');
+let lastFocused=null;
+function openReveal(){reveal.classList.add('show');setTimeout(()=>closeBtn.focus(),60);}
+function closeReveal(){reveal.classList.remove('show');
+  if(lastFocused){try{lastFocused.focus();}catch(e){}lastFocused=null;}}
+closeBtn.addEventListener('click',closeReveal);
+reveal.addEventListener('click',e=>{if(e.target===reveal)closeReveal();});
+reveal.addEventListener('keydown',e=>{
+  if(e.key==='Escape'){closeReveal();}
+  else if(e.key==='Tab'){e.preventDefault();closeBtn.focus();} // sólo hay un elemento enfocable: lo mantenemos
+});
+
+document.querySelectorAll('.sobre').forEach(s=>{
+  s.addEventListener('click',()=>{
+    lastFocused=s;
+    s.classList.add('open');
+    rImg.classList.remove('ready');
+    rImg.alt=s.dataset.alt||'Foto para ti';
+    rImg.src=IMG[s.dataset.img];rMsg.textContent=s.dataset.msg;
+    setTimeout(openReveal,260);
+    if(!opened.has(s)){opened.add(s);setTimeout(()=>s.classList.add('done'),600);}
+    if(opened.size===3){revealBtn('afterSobres');}
+  });
+});
+function resetSobres(){
+  opened.clear();
+  document.querySelectorAll('.sobre').forEach(s=>s.classList.remove('open','done'));
+  hideBtn('afterSobres');
+}
+
+/* ---------- rasca y revela (mouse + dedo) ---------- */
+const scratchMod=(function(){
+  let cv=null,ctx=null,wired=false,done=false,touched=false,drawing=false;
+  function fill(){
+    const r=cv.parentElement.getBoundingClientRect();
+    if(r.width<2){requestAnimationFrame(fill);return;} // aún sin layout: reintenta
+    cv.width=Math.round(r.width);cv.height=Math.round(r.height);
+    const g=ctx.createLinearGradient(0,0,cv.width,cv.height);
+    g.addColorStop(0,'#6a4f86');g.addColorStop(.5,'#3E63B6');g.addColorStop(1,'#8a3f73');
+    ctx.globalCompositeOperation='source-over';
+    ctx.fillStyle=g;ctx.fillRect(0,0,cv.width,cv.height);
+    ctx.globalCompositeOperation='destination-out';
+    cv.style.transition='none';cv.style.opacity='1';
+  }
+  const pos=e=>{const b=cv.getBoundingClientRect();const t=e.touches&&e.touches[0]?e.touches[0]:e;
+    return {x:t.clientX-b.left,y:t.clientY-b.top};};
+  function paint(p){ctx.beginPath();ctx.arc(p.x,p.y,26,0,7);ctx.fill();}
+  function pct(){const d=ctx.getImageData(0,0,cv.width,cv.height).data;let c=0;
+    for(let i=3;i<d.length;i+=64)if(d[i]===0)c++;return c/(d.length/64);}
+  function check(){if(done)return;if(pct()>.55){done=true;cv.style.transition='opacity .6s';cv.style.opacity='0';
+    const h=document.querySelector('.scratch-hint');if(h)h.style.opacity='0';
+    revealBtn('afterScratch');burst();}}
+  const start=e=>{drawing=true;touched=true;paint(pos(e));};
+  const move=e=>{if(!drawing)return;e.preventDefault();paint(pos(e));};
+  const end=()=>{if(drawing){drawing=false;check();}};
+  function wire(){
+    if(wired)return;wired=true;
+    cv.addEventListener('mousedown',start);cv.addEventListener('mousemove',move);addEventListener('mouseup',end);
+    cv.addEventListener('touchstart',start,{passive:false});
+    cv.addEventListener('touchmove',move,{passive:false});
+    cv.addEventListener('touchend',end);cv.addEventListener('touchcancel',end);
+    // si gira el teléfono ANTES de empezar a rascar, re-ajustamos el lienzo
+    addEventListener('resize',()=>{if(cv&&!touched&&!done)fill();});
+  }
+  return {
+    init(){cv=document.getElementById('scratch');if(!cv)return;ctx=cv.getContext('2d');
+      done=false;touched=false;drawing=false;
+      const h=document.querySelector('.scratch-hint');if(h)h.style.opacity='';
+      hideBtn('afterScratch');fill();wire();}
+  };
+})();
+
+/* ---------- canción (barra "sonando", desde el inicio) ---------- */
+// IDs de YouTube: Willie Nelson audio oficial 9ULH8_CF0os · video oficial R7f189Z0v0Y · (Elvis: pon su ID aquí)
+const SONG_ID="9ULH8_CF0os";
+const SONG_FALLBACK_URL="https://www.youtube.com/watch?v="+SONG_ID; // último recurso si el reproductor no carga
+let ytPlayer=null, ytReady=false, musicOn=false, wantsPlay=false, failed=false, startTimer=null;
+const npBtn=document.getElementById('npBtn');
+const npState=document.getElementById('npState');
+
+function setState(txt){if(npState)npState.textContent=txt;}
+function setMusicUI(on){
+  musicOn=on;
+  document.body.classList.toggle('music-on',on);
+  if(npBtn){npBtn.textContent=on?'❚❚':'▶';npBtn.setAttribute('aria-pressed',on?'true':'false');}
+  setState(on?'Willie Nelson · sonando':'Willie Nelson · toca para reproducir');
+}
+// red de seguridad iOS: si pedimos play pero el navegador lo bloqueó en silencio,
+// devolvemos el texto a "toca para reproducir" para que se entienda que hay que tocar la barra
+function watchStart(){
+  clearTimeout(startTimer);
+  startTimer=setTimeout(()=>{if(!musicOn&&!failed)setState('Willie Nelson · toca para reproducir');},1900);
+}
+function requestPlay(){
+  if(failed){window.open(SONG_FALLBACK_URL,'_blank','noopener');return;}
+  if(!ytReady||!ytPlayer){wantsPlay=true;setState('Willie Nelson · cargando…');return;}
+  wantsPlay=false;setState('Willie Nelson · cargando…');ytPlayer.playVideo();watchStart();
+}
+function pauseMusic(){if(ytReady&&ytPlayer)ytPlayer.pauseVideo();}
+function toggleMusic(){musicOn?pauseMusic():requestPlay();}
+
+window.onYouTubeIframeAPIReady=function(){
+  ytPlayer=new YT.Player('ytaudio',{
+    videoId:SONG_ID,
+    playerVars:{playsinline:1,rel:0,controls:0,modestbranding:1,fs:0,iv_load_policy:3,disablekb:1,origin:location.origin},
+    events:{
+      'onReady':()=>{ytReady=true; if(wantsPlay){wantsPlay=false;ytPlayer.playVideo();watchStart();}},
+      'onStateChange':e=>{
+        if(e.data===YT.PlayerState.PLAYING) setMusicUI(true);
+        else if(e.data===YT.PlayerState.BUFFERING){if(!musicOn)setState('Willie Nelson · cargando…');}
+        else if(e.data===YT.PlayerState.PAUSED||e.data===YT.PlayerState.ENDED) setMusicUI(false);
+      },
+      'onError':()=>{failed=true;setMusicUI(false);setState('Willie Nelson · toca para abrir en YouTube ↗');}
+    }
+  });
+};
+(function(){const t=document.createElement('script');t.src="https://www.youtube.com/iframe_api";
+  t.onerror=()=>{failed=true;setState('Willie Nelson · toca para abrir en YouTube ↗');};
+  document.head.appendChild(t);})();
+
+if(npBtn) npBtn.addEventListener('click',toggleMusic);
+// arranca al abrir (primer gesto real de la usuaria); si el navegador bloquea autoplay, el botón de la barra siempre funciona
+document.getElementById('openBtn').addEventListener('click',()=>{if(!musicOn)requestPlay();});
+
+/* ---------- volver a empezar ---------- */
+document.getElementById('restartBtn').addEventListener('click',()=>{
+  resetJoke();resetSobres();hideBtn('afterScratch');
+  closeReveal();
+  parts=[];if(raf){cancelAnimationFrame(raf);raf=null;}cx.clearRect(0,0,cc.width,cc.height);
+  goTo(0);
+});
+
+/* ---------- fade-in de fotos + precarga suave (que no aparezcan de golpe) ---------- */
+document.querySelectorAll('img.ph').forEach(img=>{
+  if(img.complete && img.naturalWidth>0) img.classList.add('ready');
+  else{img.addEventListener('load',()=>img.classList.add('ready'));
+       img.addEventListener('error',()=>img.classList.add('ready'));}
+});
+addEventListener('load',()=>{
+  ['assets/sobre1.jpg','assets/sobre2.jpg','assets/sobre3.jpg','assets/us.jpg','assets/finale.jpg','assets/scratch.jpg']
+    .forEach(src=>{const i=new Image();i.src=src;});
+});
+</script>
+</body>
+</html>
