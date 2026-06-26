@@ -159,10 +159,24 @@
   .scratch-hint{position:absolute;left:0;right:0;top:46%;text-align:center;color:#5b4a36;
     font-weight:500;letter-spacing:.06em;pointer-events:none;font-size:.95rem}
 
-  /* foto "nosotros" */
-  .us-photo{margin:8px auto 6px;width:min(290px,78%);border-radius:16px;overflow:hidden;
+  /* foto "nosotros" — se descubre al tocarla */
+  .us-reveal{display:block;border:0;background:none;padding:0;margin:0 auto;cursor:pointer;
+    width:min(290px,78%)}
+  .us-reveal:focus-visible{outline:3px solid var(--rosa);outline-offset:4px;border-radius:18px}
+  .us-photo{position:relative;margin:8px auto 6px;width:100%;border-radius:16px;overflow:hidden;
     box-shadow:0 26px 64px -22px rgba(0,0,0,.78);border:1px solid rgba(255,217,138,.2)}
-  .us-photo img{display:block;width:100%;height:auto}
+  .us-photo img{display:block;width:100%;height:auto;
+    filter:blur(9px) brightness(.82);transform:scale(1.04);transition:filter .9s ease, transform .9s ease}
+  .us-cover{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+    background:rgba(22,12,33,.5);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+    transition:opacity .7s ease;color:var(--tinta)}
+  .us-cover-txt{font-family:"DM Sans",sans-serif;font-size:.92rem;letter-spacing:.16em;
+    text-transform:uppercase;opacity:.92;animation:pulseTxt 2.2s ease-in-out infinite}
+  @keyframes pulseTxt{0%,100%{transform:scale(1);opacity:.72}50%{transform:scale(1.06);opacity:1}}
+  .us-reveal.revealed .us-photo img{filter:none;transform:none}
+  .us-reveal.revealed .us-cover{opacity:0;pointer-events:none}
+  .us-caption{opacity:0;transition:opacity .6s ease}
+  .us-caption.show{opacity:1}
 
   /* cierre con foto del arco */
   .finale{position:absolute;inset:0;z-index:3;display:flex;flex-direction:column;
@@ -225,8 +239,9 @@
 
   @media (prefers-reduced-motion: reduce){
     .petal{display:none}
-    .stage,.finale,.card,.bulb,.eq i{transition:none;animation:none}
+    .stage,.finale,.card,.bulb,.eq i,.us-cover-txt{transition:none;animation:none}
     img.ph{opacity:1;transition:none}
+    .us-photo img{transition:none}
   }
 </style>
 </head>
@@ -262,7 +277,7 @@
       <button class="sobre" data-msg="Sigues pareciéndome de lo más bonito que conozco. Y no me cuesta decirlo." data-img="sobre2" data-alt="Camila sonriendo frente a la puerta azul de talavera de Casa N°58" aria-label="Abrir sobre dos">
         <div class="body-e"></div><div class="flap"></div><div class="seal">♥</div><span class="tag">dos</span>
       </button>
-      <button class="sobre" data-msg="Esto no es para pedirte nada. Es solo que, en tu día, me acordé de ti. Y ya." data-img="sobre3" data-alt="Camila sonriendo y saludando en un andador iluminado de morado" aria-label="Abrir sobre tres">
+      <button class="sobre" data-msg="Esto no es para pedirte nada. Es solo que, en tu día, me acordé de ti. Y ya." data-img="sobre3" data-alt="Camila en una selfie, sonriendo y sacando la lengua, con suéter gris" aria-label="Abrir sobre tres">
         <div class="body-e"></div><div class="flap"></div><div class="seal">♥</div><span class="tag">tres</span>
       </button>
     </div>
@@ -284,12 +299,17 @@
     <button class="btn" data-go="4" id="afterScratch" style="opacity:0;pointer-events:none">Sigue</button>
   </section>
 
-  <!-- 4 · NOSOTROS (foto en la moto) -->
+  <!-- 4 · NOSOTROS (foto en la moto, se descubre al tocarla) -->
   <section class="stage" data-stage="4">
     <p class="eyebrow">p.d. ·</p>
-    <div class="us-photo"><img src="assets/us.jpg" class="ph" decoding="async" alt="Los dos abrazados con cascos de moto, de noche, junto a una motocicleta roja"></div>
-    <p class="lead" style="max-width:420px">Sigue siendo una de mis fotos favoritas.</p>
-    <button class="btn" data-go="5">Ya casi…</button>
+    <button class="us-reveal" id="usReveal" type="button" aria-label="Tocar para descubrir la foto">
+      <div class="us-photo">
+        <img src="assets/us.jpg" class="ph" decoding="async" alt="Los dos abrazados con cascos de moto, de noche, junto a una motocicleta roja">
+        <div class="us-cover"><span class="us-cover-txt">tócala 👀</span></div>
+      </div>
+    </button>
+    <p class="lead us-caption" id="usCaption" style="max-width:420px">Sigue siendo una de mis fotos favoritas.</p>
+    <button class="btn" data-go="5" id="afterUs" style="opacity:0;pointer-events:none">Ya casi…</button>
   </section>
 
   <!-- 5 · CIERRE + CANCIÓN -->
@@ -307,11 +327,11 @@
     <button class="np-btn" id="npBtn" type="button" aria-pressed="false" aria-label="Reproducir o pausar la canción">▶</button>
     <div class="np-track">
       <div class="np-t1">Always on My Mind</div>
-      <div class="np-t2" id="npState">Willie Nelson · toca para reproducir</div>
+      <div class="np-t2" id="npState">Elvis Presley · toca para reproducir</div>
     </div>
     <span class="eq" aria-hidden="true"><i></i><i></i><i></i><i></i></span>
   </div>
-  <!-- CANCIÓN · ID de YouTube en SONG_ID. Willie Nelson audio: 9ULH8_CF0os · video: R7f189Z0v0Y · Elvis: su ID -->
+  <!-- CANCIÓN · ID de YouTube en SONG_ID. Elvis Presley (audio oficial): ZotVMxuXBo0 · alt Willie Nelson audio: 9ULH8_CF0os -->
 
   <canvas id="confetti" aria-hidden="true"></canvas>
   <div class="dots" id="dots" aria-hidden="true"></div>
@@ -391,14 +411,15 @@ function runJoke(){
   const punch=document.getElementById('jokepunch');
   const steps=['preparando todo…','envolviendo el regalo…','revisando la fecha… 🤔'];
   let s=0;
+  // cada mensaje se queda ~1.7s para que se alcance a leer con calma
   const t=setInterval(()=>{s++;if(s<steps.length){load.textContent=steps[s];}
     else{clearInterval(t);load.style.opacity=0;
       setTimeout(()=>{line.style.transition='opacity .5s';line.style.opacity=1;burst();
-        setTimeout(()=>{punch.style.transition='opacity .6s';punch.style.opacity=1;},700);
-        setTimeout(()=>{revealBtn('jokebtn');},1300);
-      },350);
+        setTimeout(()=>{punch.style.transition='opacity .6s';punch.style.opacity=1;},1000);
+        setTimeout(()=>{revealBtn('jokebtn');},1900);
+      },450);
     }
-  },700);
+  },1700);
 }
 function resetJoke(){
   jokeDone=false;
@@ -515,11 +536,12 @@ const scratchMod=(function(){
   };
 })();
 
-/* ---------- canción (barra "sonando", desde el inicio) ---------- */
-// IDs de YouTube: Willie Nelson audio oficial 9ULH8_CF0os · video oficial R7f189Z0v0Y · (Elvis: pon su ID aquí)
-const SONG_ID="9ULH8_CF0os";
+/* ---------- canción (barra "sonando", arranca al entrar) ---------- */
+// IDs de YouTube: Elvis Presley (audio oficial) ZotVMxuXBo0 · alt Willie Nelson audio 9ULH8_CF0os
+const SONG_ID="ZotVMxuXBo0";
+const ARTIST="Elvis Presley";
 const SONG_FALLBACK_URL="https://www.youtube.com/watch?v="+SONG_ID; // último recurso si el reproductor no carga
-let ytPlayer=null, ytReady=false, musicOn=false, wantsPlay=false, failed=false, startTimer=null;
+let ytPlayer=null, ytReady=false, musicOn=false, wantsPlay=true, failed=false, startTimer=null, kicked=false;
 const npBtn=document.getElementById('npBtn');
 const npState=document.getElementById('npState');
 
@@ -528,18 +550,18 @@ function setMusicUI(on){
   musicOn=on;
   document.body.classList.toggle('music-on',on);
   if(npBtn){npBtn.textContent=on?'❚❚':'▶';npBtn.setAttribute('aria-pressed',on?'true':'false');}
-  setState(on?'Willie Nelson · sonando':'Willie Nelson · toca para reproducir');
+  setState(on?ARTIST+' · sonando':ARTIST+' · toca para reproducir');
 }
 // red de seguridad iOS: si pedimos play pero el navegador lo bloqueó en silencio,
 // devolvemos el texto a "toca para reproducir" para que se entienda que hay que tocar la barra
 function watchStart(){
   clearTimeout(startTimer);
-  startTimer=setTimeout(()=>{if(!musicOn&&!failed)setState('Willie Nelson · toca para reproducir');},1900);
+  startTimer=setTimeout(()=>{if(!musicOn&&!failed)setState(ARTIST+' · toca para reproducir');},1900);
 }
 function requestPlay(){
   if(failed){window.open(SONG_FALLBACK_URL,'_blank','noopener');return;}
-  if(!ytReady||!ytPlayer){wantsPlay=true;setState('Willie Nelson · cargando…');return;}
-  wantsPlay=false;setState('Willie Nelson · cargando…');ytPlayer.playVideo();watchStart();
+  if(!ytReady||!ytPlayer){wantsPlay=true;setState(ARTIST+' · cargando…');return;}
+  wantsPlay=false;setState(ARTIST+' · cargando…');ytPlayer.playVideo();watchStart();
 }
 function pauseMusic(){if(ytReady&&ytPlayer)ytPlayer.pauseVideo();}
 function toggleMusic(){musicOn?pauseMusic():requestPlay();}
@@ -547,29 +569,50 @@ function toggleMusic(){musicOn?pauseMusic():requestPlay();}
 window.onYouTubeIframeAPIReady=function(){
   ytPlayer=new YT.Player('ytaudio',{
     videoId:SONG_ID,
-    playerVars:{playsinline:1,rel:0,controls:0,modestbranding:1,fs:0,iv_load_policy:3,disablekb:1,origin:location.origin},
+    playerVars:{autoplay:1,playsinline:1,rel:0,controls:0,modestbranding:1,fs:0,iv_load_policy:3,disablekb:1,origin:location.origin},
     events:{
       'onReady':()=>{ytReady=true; if(wantsPlay){wantsPlay=false;ytPlayer.playVideo();watchStart();}},
       'onStateChange':e=>{
         if(e.data===YT.PlayerState.PLAYING) setMusicUI(true);
-        else if(e.data===YT.PlayerState.BUFFERING){if(!musicOn)setState('Willie Nelson · cargando…');}
+        else if(e.data===YT.PlayerState.BUFFERING){if(!musicOn)setState(ARTIST+' · cargando…');}
         else if(e.data===YT.PlayerState.PAUSED||e.data===YT.PlayerState.ENDED) setMusicUI(false);
       },
-      'onError':()=>{failed=true;setMusicUI(false);setState('Willie Nelson · toca para abrir en YouTube ↗');}
+      'onError':()=>{failed=true;setMusicUI(false);setState(ARTIST+' · toca para abrir en YouTube ↗');}
     }
   });
 };
 (function(){const t=document.createElement('script');t.src="https://www.youtube.com/iframe_api";
-  t.onerror=()=>{failed=true;setState('Willie Nelson · toca para abrir en YouTube ↗');};
+  t.onerror=()=>{failed=true;setState(ARTIST+' · toca para abrir en YouTube ↗');};
   document.head.appendChild(t);})();
 
 if(npBtn) npBtn.addEventListener('click',toggleMusic);
-// arranca al abrir (primer gesto real de la usuaria); si el navegador bloquea autoplay, el botón de la barra siempre funciona
-document.getElementById('openBtn').addEventListener('click',()=>{if(!musicOn)requestPlay();});
+// la música intenta arrancar sola al cargar (autoplay:1 + wantsPlay). Donde el navegador lo bloquea
+// (móvil/iPhone), arranca al PRIMER toque o tecla en cualquier parte; y el botón de la barra siempre funciona.
+function kickstart(){ if(kicked)return; kicked=true; if(!musicOn) requestPlay(); }
+['pointerdown','touchstart','keydown','click'].forEach(ev=>
+  addEventListener(ev,kickstart,{once:true,passive:true,capture:true}));
+
+/* ---------- foto "nosotros": se descubre al tocarla ---------- */
+const usReveal=document.getElementById('usReveal');
+if(usReveal){
+  usReveal.addEventListener('click',()=>{
+    if(usReveal.classList.contains('revealed'))return;
+    usReveal.classList.add('revealed');
+    usReveal.setAttribute('aria-label','Foto descubierta');
+    const cap=document.getElementById('usCaption');if(cap)cap.classList.add('show');
+    revealBtn('afterUs');
+    burst();
+  });
+}
+function resetUs(){
+  if(usReveal){usReveal.classList.remove('revealed');usReveal.setAttribute('aria-label','Tocar para descubrir la foto');}
+  const cap=document.getElementById('usCaption');if(cap)cap.classList.remove('show');
+  hideBtn('afterUs');
+}
 
 /* ---------- volver a empezar ---------- */
 document.getElementById('restartBtn').addEventListener('click',()=>{
-  resetJoke();resetSobres();hideBtn('afterScratch');
+  resetJoke();resetSobres();resetUs();hideBtn('afterScratch');
   closeReveal();
   parts=[];if(raf){cancelAnimationFrame(raf);raf=null;}cx.clearRect(0,0,cc.width,cc.height);
   goTo(0);
